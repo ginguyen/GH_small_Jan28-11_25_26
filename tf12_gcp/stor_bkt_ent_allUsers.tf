@@ -1,7 +1,7 @@
 resource "google_container_cluster" "primary" {
-  provider = google
-  name = "my-gke-cluster"
-  location = "us-central1"
+  provider           = google
+  name               = "my-gke-cluster"
+  location           = "us-central1"
   initial_node_count = 1
   // GCP Kubernetes Engine Clusters have Legacy Authorization enabled
   // $.resource[*].google_container_cluster.*.*[*].enable_legacy_abac anyTrue
@@ -13,8 +13,8 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_storage_bucket" "static-site" {
-  name = "image-store.com"
-  location = "EU"
+  name          = "image-store.com"
+  location      = "EU"
   force_destroy = true
   versioning {
     enabled = false
@@ -22,11 +22,14 @@ resource "google_storage_bucket" "static-site" {
   tags = {
     Name = "google_storage_bucket"
   }
+  labels = {
+    yor_trace = "93558381-de4c-410d-82d9-6d3ffe23b33d"
+  }
 }
 
 resource "google_storage_bucket_access_control" "public_rule" {
   bucket = google_storage_bucket.static-site.name
-  role = "READER"
+  role   = "READER"
   entity = "allUsers"
   tags = {
     Name = "google_storage_bucket_access_control"
